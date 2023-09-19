@@ -5,56 +5,33 @@
 # @brief Finalizing installation configurations and cleaning up after script.
 echo -ne "
 -------------------------------------------------------------------------
-   █████╗ ██████╗  ██████╗██╗  ██╗████████╗██╗████████╗██╗   ██╗███████╗
-  ██╔══██╗██╔══██╗██╔════╝██║  ██║╚══██╔══╝██║╚══██╔══╝██║   ██║██╔════╝
-  ███████║██████╔╝██║     ███████║   ██║   ██║   ██║   ██║   ██║███████╗
-  ██╔══██║██╔══██╗██║     ██╔══██║   ██║   ██║   ██║   ██║   ██║╚════██║
-  ██║  ██║██║  ██║╚██████╗██║  ██║   ██║   ██║   ██║   ╚██████╔╝███████║
-  ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝   ╚═╝   ╚═╝   ╚═╝    ╚═════╝ ╚══════╝
+   ____                  _____           _       __
+  / __ \________  __  __/ ___/__________(_)___  / /_
+ / / / /_  /_  / / / / /\__ \/ ___/ ___/ / __ \/ __/
+/ /_/ / / /_/ /_/ /_/ /___/ / /__/ /  / / /_/ / /_
+\____/ /___/___/\__, //____/\___/_/  /_/ .___/\__/
+               /____/                 /_/
 -------------------------------------------------------------------------
                     Automated Arch Linux Installer
                         SCRIPTHOME: ArchTitus
 -------------------------------------------------------------------------
 
 Final Setup and Configurations
-GRUB EFI Bootloader Install & Check
+systemd-boot Bootloader Install & Check
 "
-source ${HOME}/ArchTitus/configs/setup.conf
-
 if [[ -d "/sys/firmware/efi" ]]; then
-    grub-install --efi-directory=/boot ${DISK}
+    bootctl install
 fi
 
-echo -ne "
--------------------------------------------------------------------------
-               Creating (and Theming) Grub Boot Menu
--------------------------------------------------------------------------
-"
-# set kernel parameter for decrypting the drive
-if [[ "${FS}" == "luks" ]]; then
-sed -i "s%GRUB_CMDLINE_LINUX_DEFAULT=\"%GRUB_CMDLINE_LINUX_DEFAULT=\"cryptdevice=UUID=${ENCRYPTED_PARTITION_UUID}:ROOT root=/dev/mapper/ROOT %g" /etc/default/grub
-fi
-# set kernel parameter for adding splash screen
-sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="[^"]*/& splash /' /etc/default/grub
-
-echo -e "Installing CyberRe Grub theme..."
-THEME_DIR="/boot/grub/themes"
-THEME_NAME=CyberRe
-echo -e "Creating the theme directory..."
-mkdir -p "${THEME_DIR}/${THEME_NAME}"
-echo -e "Copying the theme..."
-cd ${HOME}/ArchTitus
-cp -a configs${THEME_DIR}/${THEME_NAME}/* ${THEME_DIR}/${THEME_NAME}
-echo -e "Backing up Grub config..."
-cp -an /etc/default/grub /etc/default/grub.bak
-echo -e "Setting the theme as the default..."
-grep "GRUB_THEME=" /etc/default/grub 2>&1 >/dev/null && sed -i '/GRUB_THEME=/d' /etc/default/grub
-echo "GRUB_THEME=\"${THEME_DIR}/${THEME_NAME}/theme.txt\"" >> /etc/default/grub
-echo -e "Updating grub..."
-grub-mkconfig -o /boot/grub/grub.cfg
-echo -e "All set!"
+touch /boot/loader/entries/arch.conf
+echo "title Arch Linux" >> /boot/loader/entries/arch.conf
+echo "linux /vmlinuz-linux" >> /boot/loader/entries/arch.conf
+echo "initrd /amd-ucode.img" >> /boot/loader/entries/arch.conf
+echo "initrd /initramfs-linux.img" >> /boot/loader/entries/arch.conf
+echo "options root=PARTUUID=$(blkid -s PARTUUID -o value /dev/sda3) rw" >> /boot/loader/entries/arch.conf
 
 echo -ne "
+
 -------------------------------------------------------------------------
                Enabling (and Theming) Login Display Manager
 -------------------------------------------------------------------------

@@ -5,12 +5,12 @@
 # @brief Configures installed system, installs base packages, and creates user. 
 echo -ne "
 -------------------------------------------------------------------------
-   █████╗ ██████╗  ██████╗██╗  ██╗████████╗██╗████████╗██╗   ██╗███████╗
-  ██╔══██╗██╔══██╗██╔════╝██║  ██║╚══██╔══╝██║╚══██╔══╝██║   ██║██╔════╝
-  ███████║██████╔╝██║     ███████║   ██║   ██║   ██║   ██║   ██║███████╗
-  ██╔══██║██╔══██╗██║     ██╔══██║   ██║   ██║   ██║   ██║   ██║╚════██║
-  ██║  ██║██║  ██║╚██████╗██║  ██║   ██║   ██║   ██║   ╚██████╔╝███████║
-  ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝   ╚═╝   ╚═╝   ╚═╝    ╚═════╝ ╚══════╝
+   ____                  _____           _       __
+  / __ \________  __  __/ ___/__________(_)___  / /_
+ / / / /_  /_  / / / / /\__ \/ ___/ ___/ / __ \/ __/
+/ /_/ / / /_/ /_/ /_/ /___/ / /__/ /  / / /_/ / /_
+\____/ /___/___/\__, //____/\___/_/  /_/ .___/\__/
+               /____/                 /_/
 -------------------------------------------------------------------------
                     Automated Arch Linux Installer
                         SCRIPTHOME: ArchTitus
@@ -30,7 +30,7 @@ echo -ne "
 -------------------------------------------------------------------------
 "
 pacman -S --noconfirm --needed pacman-contrib curl
-pacman -S --noconfirm --needed reflector rsync grub arch-install-scripts git
+pacman -S --noconfirm --needed reflector rsync arch-install-scripts git
 cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
 
 nc=$(grep -c ^processor /proc/cpuinfo)
