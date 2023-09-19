@@ -37,3 +37,4 @@ spectacle
 systemsettings
 xdg-desktop-portal-kde
 zeroconf-ioslave
+firefox-developer-edition

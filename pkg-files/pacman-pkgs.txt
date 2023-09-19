@@ -79,9 +79,9 @@ patch
 picom
 pkgconf
 powerline-fonts
-pulseaudio
-pulseaudio-alsa
-pulseaudio-bluetooth
+pipewire
+pipewire-pulse
+wirepluber
 python-notify2
 python-psutil
 python-pyqt5

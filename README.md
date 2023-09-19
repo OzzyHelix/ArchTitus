@@ -1,3 +1,9 @@
+
+# Fork Modified for Personal Use
+this script is great but I need to modify it for my own purposes so I have changed from pulseaudio
+to pipewire and switch from brave to firefox dev
+this should work for me thanks
+
 # Resurrecting Project 
 
 I'm changing the scope of the project to only do minimal installs and no longer offer the options for the install script. As the official arch install script has become better this one is no longer needed. However, I still want a script that installs my two flavors of arch. 
